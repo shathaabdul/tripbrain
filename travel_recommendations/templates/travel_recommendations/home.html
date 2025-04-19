@@ -1,0 +1,16 @@
+{% extends 'travel_recommendations/base.html' %}
+
+{% block title %}Trip Preferences{% endblock %}
+
+{% block content %}
+<div class="card shadow p-4">
+    <h2 class="mb-4">Plan Your Trip</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3">
+            <i class="bi bi-search"></i> Get Recommendations
+        </button>
+    </form>
+</div>
+{% endblock %}

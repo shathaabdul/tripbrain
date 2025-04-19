@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Travel Recommendation</title>
+</head>
+<body>
+    <h1>Travel Recommendation Form</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    {% if recommendations %}
+        <h2>Recommended Cities</h2>
+        <ul>
+            {% for city in recommendations.cities %}
+                <li>{{ city }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Restaurants</h2>
+        <ul>
+            {% for restaurant in recommendations.restaurants %}
+                <li>{{ restaurant }}</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Activities</h2>
+        <ul>
+            {% for activity in recommendations.activities %}
+                <li>{{ activity }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

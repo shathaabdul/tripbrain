@@ -1,0 +1,1 @@
+web: gunicorn trip_recommendation.wsgi

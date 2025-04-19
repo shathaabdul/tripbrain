@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Travel Plan for {{ city }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 4px;
+        }
+
+        .trip-info {
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #1a0dab;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            margin-top: 0;
+        }
+
+        .day {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Travel Plan for {{ city }}</h1>
+
+    <div class="trip-info">
+        <p><strong>Dates:</strong> {{ preferences.start_date }} to {{ preferences.end_date }} ({{ preferences.trip_days }} days)</p>
+        <p><strong>Age Group:</strong> {{ preferences.age_range }}</p>
+        <p><strong>Companions:</strong> {{ preferences.companions }}</p>
+        <p><strong>City Type:</strong> {{ preferences.city_type }}</p>
+        <p><strong>Budget:</strong>
+            {% if preferences.budget == '<2000' %} Budget (Under $2,000)
+            {% elif preferences.budget = '2000-5000' %} Moderate ($2,000 – $5,000)
+            {% elif preferences.budget = '>5000' %} Luxury (Over $5,000)
+            {% endif %}
+        </p>
+
+        <p><strong>Continent:</strong> {{ preferences.continent }}</p>
+    </div>
+
+    <div class="section">
+        {% for line in plan.splitlines %}
+            {% if line|length == 0 %}
+                <br>
+            {% elif '**' in line or '*' in line %}
+                <div class="section-title">{{ line|cut:"*" }}</div>
+            {% elif line|slice:":4" == "Day " %}
+                <p class="day">{{ line }}</p>
+            {% elif line|slice:":2"|add:line|length|stringformat:"s"|slice:"-1" == ". " %}
+                <!-- <p>{{ line }}</p> -->
+            {% else %}
+                <!-- <p>{{ line }}</p> --> 
+            {% endif %}
+        {% endfor %}
+    </div>
+
+</body>
+</html>

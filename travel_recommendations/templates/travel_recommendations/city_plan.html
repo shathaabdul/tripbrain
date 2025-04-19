@@ -1,0 +1,127 @@
+{% extends 'travel_recommendations/base.html' %}
+
+{% block title %}Plan for {{ city }}{% endblock %}
+
+{% block content %}
+
+
+
+{% with preferences=request.session.preferences %}
+<div class="mb-4">
+    <h5><i class="bi bi-info-circle"></i> Trip Summary</h5>
+    <ul>
+        <li><i class="bi bi-calendar-check"></i> {{ preferences.start_date }} to {{ preferences.end_date }} ({{ preferences.trip_days }} days)</li>
+        <li><i class="bi bi-person-circle"></i> Age Group: {{ preferences.age_range }}</li>
+        <li><i class="bi bi-people-fill"></i> Companions: {{ preferences.companions }}</li>
+        <li><i class="bi bi-geo-alt-fill"></i> City Type: {{ preferences.city_type }}</li>
+        <li><i class="bi bi-currency-dollar"></i>
+            Budget:
+            {% if preferences.budget == '<2000' %} 💸 Budget (Under $2,000)
+            {% elif preferences.budget = '2000-5000' %} 💸💸 Moderate ($2,000 – $5,000)
+            {% elif preferences.budget = '>5000' %} 💸💸💸 Luxury (Over $5,000)
+            {% endif %}
+        </li>
+        
+    </ul>
+</div>
+{% endwith %}
+
+<div class="mb-4">
+    <a href="https://www.google.com/maps/search/?api=1&query={{ city|urlencode }}" target="_blank" class="btn btn-outline-secondary">
+        <i class="bi bi-geo-alt-fill"></i> View {{ city }} on Google Maps
+    </a>
+</div>
+
+<!-- ✅ Add city image here -->
+{% if image_urls %}
+    <div class="mb-4 row g-3 align-items-start">
+
+        <!-- Left: Large Main Image -->
+        <div class="col-lg-8">
+            <img src="{{ image_urls.0 }}" class="img-fluid main-img" alt="Main photo of {{ city }}">
+        </div>
+
+        <!-- Right: Two stacked medium images -->
+        <div class="col-lg-4 d-flex flex-column gap-3">
+            {% for url in image_urls|slice:"1:3" %}
+                <img src="{{ url }}" class="img-fluid medium-img" alt="Photo of {{ city }}">
+            {% endfor %}
+        </div>
+
+        <!-- Bottom: Three small images 
+        <div class="row mt-3">
+            {% for url in image_urls|slice:"3:6" %}
+            <div class="col-4">
+                <img src="{{ url }}" class="img-fluid small-img" alt="Photo of {{ city }}">
+            </div>
+            {% endfor %}
+        </div>-->
+{% endif %}
+
+
+<div class="plan-output">
+    {% for line in plan.splitlines %}
+        {% if line|length == 0 %}
+            <br>
+        {% else %}
+            {% with clean_line=line|cut:"*"|cut:"#"%}
+                {% if 'Google Maps' in clean_line %}
+                    <p>{{ clean_line|slice:":clean_line|index:':'" }}</p>
+                {% elif 'http' not in clean_line %}
+                    <p>{{ clean_line }}</p>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
+    {% endfor %}
+</div>
+
+
+
+<form method="get" action="{% url 'download_plan_pdf' city %}">
+    <button type="submit" class="btn btn-success mt-3">
+        <i class="bi bi-download"></i> Download as PDF
+    </button>
+</form>
+
+<a class="btn btn-link mt-3" href="{% url 'home' %}">&larr; Start Over</a>
+
+
+<!-- Css img  -->
+<style>
+    .main-img {
+        height: 400px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .medium-img {
+        height: 190px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .small-img {
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    @media (max-width: 768px) {
+        .main-img {
+            height: 250px;
+        }
+        .medium-img {
+            height: 140px;
+        }
+        .small-img {
+            height: 90px;
+        }
+    }
+</style>
+
+
+  
+{% endblock %}
