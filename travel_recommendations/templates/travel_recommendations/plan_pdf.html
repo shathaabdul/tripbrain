@@ -64,10 +64,10 @@
         <p><strong>City Type:</strong> {{ preferences.city_type }}</p>
         <p><strong>Budget:</strong>
             {% if preferences.budget == '<2000' %} Budget (Under $2,000)
-            {% elif preferences.budget = '2000-5000' %} Moderate ($2,000 – $5,000)
-            {% elif preferences.budget = '>5000' %} Luxury (Over $5,000)
+            {% elif preferences.budget == '2000-5000' %} Moderate ($2,000 – $5,000)
+            {% elif preferences.budget == '>5000' %} Luxury (Over $5,000)
             {% endif %}
-        </p>
+        </p>        
 
         <p><strong>Continent:</strong> {{ preferences.continent }}</p>
     </div>
