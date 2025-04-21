@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 
 import os
-import dj_database_url
-
+# import dj_database_url
+from pathlib import Path
 
 
 
@@ -76,28 +76,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'trip_recommendation.wsgi.application'
 
-try:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default='sqlite:///db.sqlite3',
-            conn_max_age=600,
-            ssl_require=False
-        )
+# try:
+#     DATABASES = {
+#         'default': dj_database_url.config(
+#             default='sqlite:///db.sqlite3',
+#             conn_max_age=600,
+#             ssl_require=False
+#         )
+#     }
+
+#     if 'ENGINE' not in DATABASES['default']:
+#         DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+
+# except Exception as e:
+#     print("DATABASE CONFIG ERROR:", str(e))
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-
-    if 'ENGINE' not in DATABASES['default']:
-        DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
-
-except Exception as e:
-    print("DATABASE CONFIG ERROR:", str(e))
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-
-
+}
 
 
 # DATABASES = {
@@ -154,4 +159,4 @@ ALLOWED_HOSTS = ['*']  # or set your Render domain later
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+#DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)

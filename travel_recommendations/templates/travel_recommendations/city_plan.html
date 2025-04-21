@@ -16,12 +16,11 @@
         <li><i class="bi bi-geo-alt-fill"></i> City Type: {{ preferences.city_type }}</li>
         <li><i class="bi bi-currency-dollar"></i>
             Budget:
-            {% if preferences.budget == '<2000' %} 💸 Budget (Under $2,000)
-            {% elif preferences.budget = '2000-5000' %} 💸💸 Moderate ($2,000 – $5,000)
-            {% elif preferences.budget = '>5000' %} 💸💸💸 Luxury (Over $5,000)
+            {% if preferences.budget == '2000' %} 💸 Budget (Under $2,000)
+            {% elif preferences.budget == '2000-5000' %} 💰💰 Moderate ($2,000 – $5,000)
+            {% elif preferences.budget == '5000+' %} 💸💸💸 Luxury (Over $5,000)
             {% endif %}
         </li>
-        
     </ul>
 </div>
 {% endwith %}
