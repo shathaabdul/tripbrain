@@ -104,15 +104,19 @@ Please create a detailed travel itinerary for {city_name} based on these prefere
 Your plan should include:
 1. 5 suitable hotel areas based on the budget and city type
 2. A full daily plan for each day (activities, times, locations)
-3. 5 recommended restaurants
-4. 5 recommended cafés
-5. 5 unique local experiences
+3. 5 recommended restaurants — 
+4. 5 recommended cafés — include the name 
+5. 5 unique local experiences — include the name 
 6. 3 recommended telecom companies for internet SIM/data (local to the country)
 
-⚠️ Format clearly and return real, clickable Google Maps links next to each restaurant, café, and experience.
+⚠️ Format clearly and return real, **clickable Google Maps links** next to each restaurant, café, and experience — like:
+
+
+The response should be clean and organized for readability.
 """
 
-    # Call OpenAI
+
+
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
@@ -121,9 +125,13 @@ Your plan should include:
 
     plan = response.choices[0].message.content.strip()
 
+    # 🔥 Get image URL for the city using Pexels API
+    images = get_city_images(city_name, count=3)  # Get 4 photos
+
     return render(request, 'travel_recommendations/city_plan.html', {
         'city': city_name,
         'plan': plan,
+        # 'image_urls': images
     })
 
 
