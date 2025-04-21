@@ -82,27 +82,71 @@ def city_results(request):
         'cities': cities
     })
 
-
-# Page 3: GPT-generated plan
 def city_plan(request, city_name): 
     preferences = request.session.get('preferences')
     if not preferences:
         return redirect('home')
 
-    # prompt = ... ← skip for now
+    prompt = f"""
+You are a smart travel assistant helping a user plan a trip.
 
-    # response = client.chat.completions.create(...)
-    # plan = response.choices[0].message.content.strip()
-    plan = "Test Plan: Welcome to your trip page for " + city_name  # 🔹 temporary placeholder
+Details:
+- Trip location: {city_name}
+- Duration: {preferences['trip_days']} days (from {preferences['start_date']} to {preferences['end_date']})
+- Age range: {preferences['age_range']}
+- Travel companions: {preferences['companions']}
+- Preferred city type: {preferences['city_type']}
+- Budget: {preferences['budget']}
+- Continent: {preferences['continent']}
 
-    # Optional: comment out image fetching too
-    # images = get_city_images(city_name, count=3)
+Please create a detailed travel itinerary for {city_name} based on these preferences.
+
+Your plan should include:
+1. 5 suitable hotel areas based on the budget and city type
+2. A full daily plan for each day (activities, times, locations)
+3. 5 recommended restaurants
+4. 5 recommended cafés
+5. 5 unique local experiences
+6. 3 recommended telecom companies for internet SIM/data (local to the country)
+
+⚠️ Format clearly and return real, clickable Google Maps links next to each restaurant, café, and experience.
+"""
+
+    # Call OpenAI
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.8,
+    )
+
+    plan = response.choices[0].message.content.strip()
 
     return render(request, 'travel_recommendations/city_plan.html', {
         'city': city_name,
         'plan': plan,
-        # 'image_urls': images
     })
+
+
+# # Page 3: GPT-generated plan
+# def city_plan(request, city_name): 
+#     preferences = request.session.get('preferences')
+#     if not preferences:
+#         return redirect('home')
+
+#     # prompt = ... ← skip for now
+
+#     # response = client.chat.completions.create(...)
+#     # plan = response.choices[0].message.content.strip()
+#     plan = "Test Plan: Welcome to your trip page for " + city_name  # 🔹 temporary placeholder
+
+#     # Optional: comment out image fetching too
+#     # images = get_city_images(city_name, count=3)
+
+#     return render(request, 'travel_recommendations/city_plan.html', {
+#         'city': city_name,
+#         'plan': plan,
+#         # 'image_urls': images
+#     })
 
 
 # PDF Download View
