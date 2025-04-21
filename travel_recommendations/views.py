@@ -133,7 +133,7 @@ The response should be clean and organized for readability.
     return render(request, 'travel_recommendations/city_plan.html', {
         'city': city_name,
         'plan': plan,
-        'image_urls': images
+        # 'image_urls': images
     })
 
 
