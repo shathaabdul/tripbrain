@@ -89,46 +89,14 @@ def city_plan(request, city_name):
     if not preferences:
         return redirect('home')
 
-    prompt = f"""
-You are a smart travel assistant helping a user plan a trip.
+    # prompt = ... ← skip for now
 
-Details:
-- Trip location: {city_name}
-- Duration: {preferences['trip_days']} days (from {preferences['start_date']} to {preferences['end_date']})
-- Age range: {preferences['age_range']}
-- Travel companions: {preferences['companions']}
-- Preferred city type: {preferences['city_type']}
-- Budget: {preferences['budget']}
-- Continent: {preferences['continent']}
+    # response = client.chat.completions.create(...)
+    # plan = response.choices[0].message.content.strip()
+    plan = "Test Plan: Welcome to your trip page for " + city_name  # 🔹 temporary placeholder
 
-Please create a detailed travel itinerary for {city_name} based on these preferences.
-
-Your plan should include:
-1. 5 suitable hotel areas based on the budget and city type
-2. A full daily plan for each day (activities, times, locations)
-3. 5 recommended restaurants — 
-4. 5 recommended cafés — include the name 
-5. 5 unique local experiences — include the name 
-6. 3 recommended telecom companies for internet SIM/data (local to the country)
-
-⚠️ Format clearly and return real, **clickable Google Maps links** next to each restaurant, café, and experience — like:
-
-
-The response should be clean and organized for readability.
-"""
-
-
-
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.8,
-    )
-
-    plan = response.choices[0].message.content.strip()
-
-    # 🔥 Get image URL for the city using Pexels API
-    images = get_city_images(city_name, count=3)  # Get 4 photos
+    # Optional: comment out image fetching too
+    # images = get_city_images(city_name, count=3)
 
     return render(request, 'travel_recommendations/city_plan.html', {
         'city': city_name,
