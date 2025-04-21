@@ -156,11 +156,72 @@ The response should be clean and organized for readability.
 
 
 # PDF Download View
+# def download_plan_pdf(request, city_name):
+#     preferences = request.session.get('preferences')
+#     if not preferences:
+#         return redirect('home')
+
+#     prompt = f"""
+#     You are a helpful travel assistant.
+
+#     The user is planning a {preferences['trip_days']}-day trip to {city_name}, 
+#     from {preferences['start_date']} to {preferences['end_date']}.
+#     They are in the {preferences['age_range']} age range, 
+#     traveling with {preferences['companions']},
+#     and prefer a {preferences['city_type']} type of city.
+#     Their total budget is {preferences['budget']}, 
+#     and the city is in the continent of {preferences['continent']}.
+
+#     Please provide a structured travel itinerary with the following sections:
+#     1. Hotel Areas – Recommend 5 suitable areas to stay in the city with brief descriptions
+#     2. Daily Plan – Activities for each day (clearly labeled Day 1, Day 2, etc.)
+#     3. Top 5 Restaurants – Include the name 
+#     4. Top 5 Cafés – Include the name 
+#     5. 5 Unique Local Experiences – Include the name 
+#     6. 3 Telecom Companies – For mobile internet and SIM cards
+
+#     Be clear, organized, and include line breaks between sections.
+#     """
+
+
+#     response = client.chat.completions.create(
+#         model="gpt-3.5-turbo",
+#         messages=[{"role": "user", "content": prompt}],
+#         temperature=0.8,
+#     )
+
+#     plan = response.choices[0].message.content.strip()
+
+#     template_path = 'travel_recommendations/plan_pdf.html'
+#     context = {
+#         'city': city_name,
+#         'plan': plan,
+#         'preferences': preferences
+#     }
+
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = f'attachment; filename="{city_name}_travel_plan.pdf"'
+
+#     template = get_template(template_path)
+#     html = template.render(context)
+#     pisa_status = pisa.CreatePDF(html, dest=response)
+
+#     if pisa_status.err:
+#         return HttpResponse('PDF generation failed')
+
+#     return response
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.shortcuts import redirect
+from xhtml2pdf import pisa
+
 def download_plan_pdf(request, city_name):
     preferences = request.session.get('preferences')
     if not preferences:
         return redirect('home')
 
+    # GPT prompt to generate a full travel plan
     prompt = f"""
     You are a helpful travel assistant.
 
@@ -183,12 +244,7 @@ def download_plan_pdf(request, city_name):
     Be clear, organized, and include line breaks between sections.
     """
 
-
-    # and a real Google Maps URL (e.g. Central Cafe – https://g.co/kgs/abc123)
-    # and a real Google Maps URL
-    # and a real Google Maps URL
-
-
+    # Generate plan from OpenAI
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
@@ -197,11 +253,12 @@ def download_plan_pdf(request, city_name):
 
     plan = response.choices[0].message.content.strip()
 
+    # Render HTML to PDF
     template_path = 'travel_recommendations/plan_pdf.html'
     context = {
         'city': city_name,
         'plan': plan,
-        'preferences': preferences
+        'preferences': preferences,
     }
 
     response = HttpResponse(content_type='application/pdf')
