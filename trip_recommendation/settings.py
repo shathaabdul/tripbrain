@@ -81,12 +81,12 @@ WSGI_APPLICATION = 'trip_recommendation.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
-#new 
+
 DATABASES = {
     'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
         conn_max_age=600,
-        ssl_require=True,
-        default='sqlite:///db.sqlite3'  # 👈 fallback to local SQLite
+        ssl_require=False  # Set False because SQLite doesn’t use SSL
     )
 }
 
