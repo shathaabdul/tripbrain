@@ -77,8 +77,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'trip_recommendation.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 
 
@@ -86,13 +84,11 @@ DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',
         conn_max_age=600,
-        ssl_require=False  # Set False because SQLite doesn’t use SSL
+        ssl_require=False 
     )
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
