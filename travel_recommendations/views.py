@@ -119,7 +119,7 @@ The response should be clean and organized for readability.
 
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[{"role": "user", "content": prompt}],  
         temperature=0.8,
     )
 
@@ -131,7 +131,7 @@ The response should be clean and organized for readability.
     return render(request, 'travel_recommendations/city_plan.html', {
         'city': city_name,
         'plan': plan,
-        # 'image_urls': images
+        'image_urls': images
     })
 
 
