@@ -109,8 +109,6 @@ Your plan should include:
 5. 5 unique local experiences — include the name 
 6. 3 recommended telecom companies for internet SIM/data (local to the country)
 
-⚠️ Format clearly and return real, **clickable Google Maps links** next to each restaurant, café, and experience — like:
-
 
 The response should be clean and organized for readability.
 """
