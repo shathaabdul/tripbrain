@@ -76,17 +76,37 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'trip_recommendation.wsgi.application'
 
+try:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default='sqlite:///db.sqlite3',
+            conn_max_age=600,
+            ssl_require=False
+        )
+    }
+
+    if 'ENGINE' not in DATABASES['default']:
+        DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
+
+except Exception as e:
+    print("DATABASE CONFIG ERROR:", str(e))
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3',
-        conn_max_age=600,
-        ssl_require=False 
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='sqlite:///db.sqlite3',
+#         conn_max_age=600,
+#         ssl_require=False 
+#     )
+# }
 
 
 AUTH_PASSWORD_VALIDATORS = [
