@@ -24,6 +24,7 @@
         .section-title {
             font-size: 18px;
             font-weight: bold;
+            margin-top: 20px;
             margin-bottom: 10px;
             border-bottom: 1px solid #ccc;
             padding-bottom: 4px;
@@ -41,10 +42,6 @@
 
         a:hover {
             text-decoration: underline;
-        }
-
-        ul {
-            margin-top: 0;
         }
 
         .day {
@@ -67,8 +64,7 @@
             {% elif preferences.budget == '2000-5000' %} Moderate ($2,000 – $5,000)
             {% elif preferences.budget == '>5000' %} Luxury (Over $5,000)
             {% endif %}
-        </p>        
-
+        </p>
         <p><strong>Continent:</strong> {{ preferences.continent }}</p>
     </div>
 
@@ -76,14 +72,12 @@
         {% for line in plan.splitlines %}
             {% if line|length == 0 %}
                 <br>
-            {% elif '**' in line or '*' in line %}
-                <div class="section-title">{{ line|cut:"*" }}</div>
+            {% elif "**" in line or "*" in line %}
+                <div class="section-title">{{ line|striptags|cut:"*" }}</div>
             {% elif line|slice:":4" == "Day " %}
                 <p class="day">{{ line }}</p>
-            {% elif line|slice:":2"|add:line|length|stringformat:"s"|slice:"-1" == ". " %}
-                <!-- <p>{{ line }}</p> -->
             {% else %}
-                <!-- <p>{{ line }}</p> --> 
+                <p>{{ line|safe }}</p>
             {% endif %}
         {% endfor %}
     </div>
